@@ -1,0 +1,103 @@
+syntax = "proto2";
+import "PTP.Common.proto";
+package PTP.Buddy;
+option java_package = "com.ptp.im.protobuf";
+
+option optimize_for = LITE_RUNTIME;
+
+message BuddyGetListReq{
+  repeated uint32 user_ids = 1;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyGetListRes{
+  required Common.ERR error = 1;
+  repeated Common.UserInfo buddy_list = 2;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyGetALLReq{
+  required uint32 buddy_updated_time = 1;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyGetALLRes{
+  required uint32 buddy_updated_time = 1;
+  required Common.ERR error = 2;
+  repeated Common.UserInfo buddy_list = 3;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyGetStatReq{
+  repeated uint32 user_ids = 1;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyGetStatRes{
+  required Common.ERR error = 1;
+  repeated Common.UserStat user_stat_list = 2;
+
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyStatNotify{
+  required Common.UserStat user_stat = 1;
+}
+
+message BuddyModifyReq{
+  required Common.BuddyModifyAction buddy_modify_action = 2;
+  required string value = 4;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyModifyRes{
+  required Common.ERR error = 1;
+  required Common.BuddyModifyAction buddy_modify_action = 2;
+  required string value = 3;
+  repeated uint32 notify_pairs = 5;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyModifyNotify {
+  required Common.BuddyModifyAction buddy_modify_action = 1;
+  required uint32 uid = 2;
+  required string value = 4;
+}
+
+message BuddyModifyUpdatePair {
+  repeated uint32 pair_uid_list = 1;
+  required uint32 auth_uid = 2;
+}
+
+message BuddyImportContactsReq{
+  repeated Common.InputPhoneContact phone_contacts = 1;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyImportContactsRes{
+  required Common.ERR error = 1;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyQueryListReq{
+  required Common.BuddyQueryParam params = 1;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message BuddyQueryListRes{
+  required Common.ERR error = 1;
+  repeated Common.UserInfo buddy_list = 2;
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}

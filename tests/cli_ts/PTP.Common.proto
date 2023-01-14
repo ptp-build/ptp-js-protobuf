@@ -1,0 +1,296 @@
+syntax = "proto2";
+package PTP.Common;
+option java_package = "com.ptp.im.protobuf";
+
+option optimize_for = LITE_RUNTIME;
+
+enum SID{
+  S_AUTH = 0x0001;
+  S_BUDDY = 0x0002;
+  S_MSG = 0x0003;
+  S_GROUP = 0x0004;
+  S_FILE = 0x0005;
+  S_SERVER = 0x0006;
+  S_OTHER = 0x0007;
+  S_SWITCH = 0x0008;
+}
+
+enum CID_AUTH{
+  CID_AuthLoginReq = 0x0101;
+  CID_AuthLoginRes = 0x0102;
+  CID_AuthLogoutReq = 0x0103;
+  CID_AuthLogoutRes = 0x0104;
+  CID_AuthCaptchaReq = 0x0105;
+  CID_AuthCaptchaRes = 0x0106;
+}
+
+enum CID_BUDDY{
+  CID_BuddyStatNotify = 0x0201;
+  CID_BuddyGetListReq = 0x0202;
+  CID_BuddyGetListRes = 0x0203;
+  CID_BuddyGetALLReq = 0x0204;
+  CID_BuddyGetALLRes = 0x0205;
+  CID_BuddyGetStatReq = 0x0206;
+  CID_BuddyGetStatRes = 0x0207;
+  CID_BuddyModifyReq = 0x0208;
+  CID_BuddyModifyRes = 0x0209;
+  CID_BuddyModifyNotify = 0x020a;
+  CID_BuddyModifyUpdatePair = 0x020b;
+  CID_BuddyImportContactsReq = 0x020c;
+  CID_BuddyImportContactsRes = 0x020d;
+  CID_BuddyQueryListReq = 0x020e;
+  CID_BuddyQueryListRes = 0x020f;
+}
+
+enum CID_MSG{
+  CID_MsgReq = 0x0301;
+  CID_MsgRes = 0x0302;
+  CID_MsgReadAckReq = 0x0303;
+  CID_MsgReadNotify = 0x0304;
+  CID_MsgGetMaxIdReq = 0x0305;
+  CID_MsgGetMaxIdRes = 0x0306;
+  CID_MsgGetByIdsReq = 0x0307;
+  CID_MsgGetByIdsRes = 0x0308;
+  CID_MsgNotify = 0x0309;
+  CID_MsgUnNotify = 0x030a;
+}
+
+enum CID_GROUP{
+  CID_GroupPreCreateReq = 0x0401;
+  CID_GroupPreCreateRes = 0x0402;
+  CID_GroupCreateReq = 0x0403;
+  CID_GroupCreateRes = 0x0404;
+  CID_GroupModifyReq = 0x0405;
+  CID_GroupModifyRes = 0x0406;
+  CID_GroupModifyNotify = 0x0407;
+  CID_GroupChangeMemberReq = 0x0408;
+  CID_GroupChangeMemberRes = 0x0409;
+  CID_GroupChangeMemberNotify = 0x040a;
+  CID_GroupGetListReq = 0x040b;
+  CID_GroupGetListRes = 0x040c;
+  CID_GroupUnreadMsgReq = 0x040d;
+  CID_GroupUnreadMsgRes = 0x040e;
+  CID_GroupRemoveSessionReq = 0x040f;
+  CID_GroupRemoveSessionRes = 0x0411;
+  CID_GroupRemoveSessionNotify = 0x0412;
+  CID_GroupGetMembersListReq = 0x0413;
+  CID_GroupGetMembersListRes = 0x0414;
+}
+
+enum CID_FILE{
+  CID_FileImgUploadReq = 0x0501;
+  CID_FileImgUploadRes = 0x0502;
+  CID_FileImgDownloadReq = 0x0503;
+  CID_FileImgDownloadRes = 0x0504;
+}
+
+enum CID_SERVER{
+  CID_ServerLoginReq = 0x0601;
+  CID_ServerLoginRes = 0x0602;
+}
+
+enum CID_OTHER{
+  CID_HeartBeatNotify = 0x0701;
+  CID_CaptchaReq = 0x0702;
+  CID_CaptchaRes = 0x0703;
+}
+
+enum CID_SWITCH{
+  CID_SwitchPtpReq = 0x0801;
+  CID_SwitchPtpRes = 0x0802;
+  CID_SwitchPtpNotify = 0x0803;
+  CID_SwitchDevicesReq = 0x0804;
+  CID_SwitchDevicesNotify = 0x0805;
+}
+
+enum QRCODE_TYPE{
+  QRCODE_TYPE_MNEMONIC_SHARE = 1;
+  QRCODE_TYPE_NAME_CARD = 2;
+}
+
+enum ERR{
+  NO_ERROR = 0;
+  E_SYSTEM = 1;
+  E_GROUP_CREATE_PAIR_GROUP_MEMBER_SIE_INVALID = 2;
+  E_GROUP_CREATE_PAIR_GROUP_NO_REG_USER = 3;
+  E_GROUP_HAS_CREATED = 4;
+  E_REASON_NO_ROUTE_SERVER = 5;
+  E_REASON_NO_LOGIN_SERVER = 6;
+  E_REASON_NO_DB_SERVER = 7;
+  E_LOGIN_ERROR = 8;
+  E_PB_PARSE_ERROR = 9;
+  E_SWITCH_USER_NO_ONLINE = 10;
+  E_USERNAME_EXISTS = 11;
+  E_USERNAME_INVALID = 12;
+  E_CLIENT = 1003;
+  E_CLIENT_TIMEOUT = 1004;
+
+  E_SERVER_NOT_FOUND = 404;
+}
+
+enum SwitchType{
+  SwitchType_Apply = 1;
+  SwitchType_Offer= 2;
+  SwitchType_Answer = 3;
+  SwitchType_Candidate = 4;
+  SwitchType_Ready = 5;
+  SwitchType_Bye = 6;
+
+}
+
+enum UserStat{
+  USER_STAT_ONLINE = 1;
+  USER_STAT_OFFLINE = 2;
+  USER_STAT_LEAVE = 3;
+}
+
+enum MsgType{
+  MSG_TYPE_TEXT = 0x01;
+  MSG_TYPE_AUDIO = 0x02;
+}
+
+enum ClientType{
+  CLIENT_TYPE_WEB = 0x01;
+  CLIENT_TYPE_PC = 0x02;
+  CLIENT_TYPE_MAC = 0x03;
+  CLIENT_TYPE_IOS = 0x11;
+  CLIENT_TYPE_ANDROID = 0x12;
+}
+
+
+enum SessionStat{
+  SESSION_STAT_OK = 0x00;
+  SESSION_STAT_DELETE = 0x01;
+}
+
+enum ShieldStatus{
+  SHIELD_STATUS_OK = 0x00;
+  SHIELD_STATUS_DELETE = 0x01;
+}
+
+message IpAddress{
+  required string ip = 1;
+  required uint32 port = 2;
+}
+
+message UserInfo{
+  required string address = 1;
+  required bytes pub_key = 2;
+  required string avatar = 3;
+  required uint32 status = 4;
+  optional string user_name = 5;
+  optional string nick_name = 6;
+  optional string sign_info = 7;
+  required uint32 uid = 8;
+  optional string first_name = 9;
+  optional string last_name = 10;
+  optional uint32 login_time = 11;
+  optional bool is_online = 12;
+}
+
+message UserStatInfo{
+  required uint32 uid = 1;
+  required UserStat status = 2;
+}
+
+message MsgInfoList{
+  required uint32 msg_id = 1;
+  required uint32 from_uid = 4;
+  optional uint32 group_id = 5;
+  required uint32 sent_at = 6;
+  required MsgType msg_type = 7;
+  required string msg_data = 8;
+}
+
+enum BuddyModifyAction {
+  BuddyModifyAction_nickname = 1;
+  BuddyModifyAction_avatar = 2;
+  BuddyModifyAction_sign_info = 3;
+  BuddyModifyAction_user_name = 4;
+  BuddyModifyAction_first_name = 5;
+  BuddyModifyAction_last_name = 6;
+}
+
+enum GroupType{
+  GROUP_TYPE_PAIR = 0x01;
+  GROUP_TYPE_MULTI = 0x02;
+}
+
+enum GroupMemberStatus{
+  GROUP_MEMBER_STATUS_NORMAL = 1;
+}
+
+enum GroupModifyAction {
+  GroupModifyAction_name = 1;
+  GroupModifyAction_avatar = 2;
+}
+
+enum GroupMemberModifyAction {
+  GroupMemberModifyAction_DEL = 1;
+  GroupMemberModifyAction_ADD = 2;
+}
+
+message GroupMember{
+  required uint32 uid = 1;
+  required GroupMemberStatus member_status = 2;
+}
+
+message GroupRecord {
+  required string name = 0x01;
+  required string avatar = 0x02;
+  required string group_adr = 0x03;
+  required GroupType group_type = 0x04;
+  optional uint32 pair_uid = 0x05;
+  optional uint32 owner_uid = 0x06;
+  required uint32 group_id = 0x07;
+  required uint32 unReadCnt = 0x08;
+  optional uint32 lastMsgId = 0x09;
+  required uint32 msgUpTime = 0x0b;
+  required uint32 memberUpTime = 0x0c;
+}
+
+message GroupInfo{
+  required string group_adr = 1;
+  required uint32 group_id = 9;
+  required string name = 2;
+  required string avatar = 3;
+  required uint32 owner_uid = 4;
+  optional uint32 pair_uid = 5;
+  required GroupType group_type = 6;
+  required uint32 group_idx = 7;
+  required uint32 created_time = 8;
+}
+
+message MsgInfo{
+  required uint32 group_id = 1;
+  required uint32 from_uid = 2;
+  required uint32 sent_at = 3;
+  required uint32 msg_id = 4;
+  required MsgType msg_type = 6;
+  required string msg_data = 7;
+}
+
+message DevicesInfo{
+  required Common.ClientType client_type = 0x01;
+  required string client_version = 0x02;
+  required uint32 login_time = 0x03;
+  required string browser_name = 0x04;
+  required string browser_version = 0x05;
+  required string os_name = 0x06;
+  required string os_version = 0x07;
+  required bool is_intel = 0x08;
+  required uint32 uid = 0x09;
+  required string client_id = 0x0a;
+}
+
+message InputPhoneContact{
+  required uint64 client_id = 0x01;
+  optional string phone = 0x02;
+  optional string first_name = 0x03;
+  optional string last_name = 0x04;
+}
+
+message BuddyQueryParam{
+  repeated string addressList = 0x01;
+  repeated string usernameList = 0x02;
+}

@@ -1,0 +1,35 @@
+syntax = "proto2";
+import "PTP.Common.proto";
+package PTP.Switch;
+option java_package = "com.ptp.im.protobuf";
+
+option optimize_for = LITE_RUNTIME;
+
+message SwitchPtpReq{
+  required string to_adr = 1;
+  required string data = 2;
+  required Common.SwitchType switch_type = 3;
+}
+
+message SwitchPtpRes{
+  required Common.ERR error = 1;
+}
+
+message SwitchPtpNotify{
+  required string from_adr = 1;
+  required string data = 2;
+  required Common.SwitchType switch_type = 3;
+}
+
+message SwitchDevicesReq{
+  required string browser_name = 1;
+  required string browser_version = 2;
+  required string os_name = 3;
+  required string os_version = 4;
+  required bool is_intel = 5;
+  required string client_id = 9;
+}
+
+message SwitchDevicesNotify{
+  repeated Common.DevicesInfo devices = 1;
+}

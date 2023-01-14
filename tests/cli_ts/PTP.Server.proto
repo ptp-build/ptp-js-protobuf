@@ -1,0 +1,18 @@
+syntax = "proto2";
+import "PTP.Common.proto";
+package PTP.Server;
+
+option optimize_for = LITE_RUNTIME;
+
+message ServerLoginReq{
+  required string address = 1;
+  required string captcha = 2;
+  required bytes sign = 3;
+  optional bytes attach_data = 4;
+}
+
+message ServerLoginRes{
+  required Common.ERR error = 1;
+  optional Common.UserInfo user_info = 2;
+  optional bytes attach_data = 20;
+}

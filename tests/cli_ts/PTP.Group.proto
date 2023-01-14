@@ -1,0 +1,155 @@
+syntax = "proto2";
+import "PTP.Common.proto";
+package PTP.Group;
+option java_package = "com.ptp.im.protobuf";
+
+option optimize_for = LITE_RUNTIME;
+
+message GroupPreCreateReq{
+	required Common.GroupType group_type = 1;
+	repeated uint32 members = 7;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupPreCreateRes{
+	optional string group_adr = 1;
+	required uint32 group_idx = 2;
+	required Common.ERR error = 3;
+	optional string captcha = 4;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupCreateReq{
+	required uint32 group_idx = 1;
+	required bytes sign = 2;
+	required string captcha = 3;
+	required Common.GroupType group_type = 4;
+	optional string name = 5;
+	optional string avatar = 6;
+	repeated uint32 members = 7;
+	optional string about = 8;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupCreateRes{
+	optional Common.GroupInfo group = 1;
+	repeated Common.GroupMember group_members = 2;
+	required Common.ERR error = 3;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupModifyReq{
+	required Common.GroupModifyAction group_modify_action = 1;
+	required uint32 group_id = 2;
+	required string value = 4;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupModifyRes{
+	required Common.GroupModifyAction group_modify_action = 1;
+	required string value = 2;
+	required uint32 group_id = 3;
+	required Common.ERR error = 4;
+	repeated uint32 notify_members = 5;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupModifyNotify{
+	required Common.GroupModifyAction group_modify_action = 1;
+	required uint32 group_id = 2;
+	required string value = 4;
+}
+
+message GroupChangeMemberReq{
+	required Common.GroupMemberModifyAction group_member_modify_action = 1;
+	required uint32 group_id = 2;
+	repeated string members = 3;
+
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupChangeMemberRes{
+	required Common.GroupMemberModifyAction group_member_modify_action = 1;
+	required uint32 group_id = 3;
+	repeated string members_chang = 4;
+	required Common.ERR error = 5;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupChangeMemberNotify{
+	required Common.GroupMemberModifyAction group_member_modify_action = 1;
+	required uint32 group_id = 2;
+	repeated string members_chang = 3;
+}
+
+message GroupGetListReq{
+	required uint32 group_info_updated_time = 1;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupGetListRes{
+	required uint32 group_info_updated_time = 1;
+	repeated Common.GroupInfo groups = 2;
+	required Common.ERR error = 3;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupGetMembersListReq{
+	required uint32 group_members_updated_time = 1;
+	required uint32 group_id = 2;
+
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupGetMembersListRes{
+	required uint32 group_members_updated_time = 1;
+	required uint32 group_id = 2;
+	repeated Common.UserInfo members = 3;
+	repeated Common.GroupMember group_members = 4;
+	required Common.ERR error = 5;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupUnreadMsgReq{
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupUnreadMsgRes{
+	repeated Common.MsgInfo unread_list = 1;
+	required uint32 unread_cnt = 3;
+	required Common.ERR error = 4;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupRemoveSessionReq{
+	required uint32 group_id = 2;
+
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupRemoveSessionRes{
+	required Common.ERR error = 1;
+	required uint32 group_id = 2;
+	optional bytes attach_data = 20;
+	optional uint32 auth_uid = 21;
+}
+
+message GroupRemoveSessionNotify{
+	required uint32 group_id = 1;
+	required uint32 from_uid = 3;
+}

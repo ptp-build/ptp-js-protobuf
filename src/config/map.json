@@ -1,0 +1,515 @@
+{
+  "SID_LOGIN": {
+    "LoginCmdID": {
+      "CID_LOGIN_REQ_MSGSERVER": {
+        "kind": "0",
+        "fileName": "Login",
+        "msgName": ""
+      },
+      "CID_LOGIN_RES_MSGSERVER": {
+        "kind": "1",
+        "fileName": "Login",
+        "msgName": ""
+      },
+      "CID_LOGIN_REQ_USERLOGIN": {
+        "kind": "0",
+        "fileName": "Login",
+        "msgName": "IMLoginReq"
+      },
+      "CID_LOGIN_RES_USERLOGIN": {
+        "kind": "1",
+        "fileName": "Login",
+        "msgName": "IMLoginRes"
+      },
+      "CID_LOGIN_REQ_LOGINOUT": {
+        "kind": "0",
+        "fileName": "Login",
+        "msgName": "IMDeviceTokenReq"
+      },
+      "CID_LOGIN_RES_LOGINOUT": {
+        "kind": "1",
+        "fileName": "Login",
+        "msgName": "IMDeviceTokenRsp"
+      },
+      "CID_LOGIN_KICK_USER": {
+        "kind": "",
+        "fileName": "Login",
+        "msgName": ""
+      },
+      "CID_LOGIN_REQ_DEVICETOKEN": {
+        "kind": "0",
+        "fileName": "Login",
+        "msgName": "IMDeviceTokenReq"
+      },
+      "CID_LOGIN_RES_DEVICETOKEN": {
+        "kind": "1",
+        "fileName": "Login",
+        "msgName": "IMDeviceTokenRsp"
+      },
+      "CID_LOGIN_REQ_KICKPCCLIENT": {
+        "kind": "0",
+        "fileName": "Login",
+        "msgName": "IMKickPCClientReq"
+      },
+      "CID_LOGIN_RES_KICKPCCLIENT": {
+        "kind": "1",
+        "fileName": "Login",
+        "msgName": "IMKickPCClientRsp"
+      },
+      "CID_LOGIN_REQ_PUSH_SHIELD": {
+        "kind": "0",
+        "fileName": "Login",
+        "msgName": "IMPushShieldReq"
+      },
+      "CID_LOGIN_RES_PUSH_SHIELD": {
+        "kind": "1",
+        "fileName": "Login",
+        "msgName": "IMPushShieldRsp"
+      },
+      "CID_LOGIN_REQ_QUERY_PUSH_SHIELD": {
+        "kind": "0",
+        "fileName": "Login",
+        "msgName": "IMQueryPushShieldReq"
+      },
+      "CID_LOGIN_RES_QUERY_PUSH_SHIELD": {
+        "kind": "1",
+        "fileName": "Login",
+        "msgName": "IMQueryPushShieldRsp"
+      }
+    }
+  },
+  "SID_BUDDY_LIST": {
+    "BuddyListCmdID": {
+      "CID_BUDDY_LIST_RECENT_CONTACT_SESSION_REQUEST": {
+        "kind": "0",
+        "fileName": "Buddy",
+        "msgName": "IMRecentContactSessionReq"
+      },
+      "CID_BUDDY_LIST_RECENT_CONTACT_SESSION_RESPONSE": {
+        "kind": "1",
+        "fileName": "Buddy",
+        "msgName": "IMRecentContactSessionRsp"
+      },
+      "CID_BUDDY_LIST_STATUS_NOTIFY": {
+        "kind": "",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_USER_INFO_REQUEST": {
+        "kind": "0",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_USER_INFO_RESPONSE": {
+        "kind": "1",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_REMOVE_SESSION_REQ": {
+        "kind": "0",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_REMOVE_SESSION_RES": {
+        "kind": "1",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_ALL_USER_REQUEST": {
+        "kind": "0",
+        "fileName": "Buddy",
+        "msgName": "IMAllUserReq"
+      },
+      "CID_BUDDY_LIST_ALL_USER_RESPONSE": {
+        "kind": "1",
+        "fileName": "Buddy",
+        "msgName": "IMAllUserRsp"
+      },
+      "CID_BUDDY_LIST_USERS_STATUS_REQUEST": {
+        "kind": "0",
+        "fileName": "Buddy",
+        "msgName": "IMUsersStatReq"
+      },
+      "CID_BUDDY_LIST_USERS_STATUS_RESPONSE": {
+        "kind": "1",
+        "fileName": "Buddy",
+        "msgName": "IMUsersStatRsp"
+      },
+      "CID_BUDDY_LIST_CHANGE_AVATAR_REQUEST": {
+        "kind": "0",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_CHANGE_AVATAR_RESPONSE": {
+        "kind": "1",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_PC_LOGIN_STATUS_NOTIFY": {
+        "kind": "",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_REMOVE_SESSION_NOTIFY": {
+        "kind": "",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_DEPARTMENT_REQUEST": {
+        "kind": "0",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_DEPARTMENT_RESPONSE": {
+        "kind": "1",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_AVATAR_CHANGED_NOTIFY": {
+        "kind": "",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_CHANGE_SIGN_INFO_REQUEST": {
+        "kind": "0",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_CHANGE_SIGN_INFO_RESPONSE": {
+        "kind": "1",
+        "fileName": "Buddy",
+        "msgName": ""
+      },
+      "CID_BUDDY_LIST_SIGN_INFO_CHANGED_NOTIFY": {
+        "kind": "",
+        "fileName": "Buddy",
+        "msgName": ""
+      }
+    }
+  },
+  "SID_MSG": {
+    "MessageCmdID": {
+      "CID_MSG_DATA": {
+        "kind": "0",
+        "fileName": "Message",
+        "msgName": "IMMsgData"
+      },
+      "CID_MSG_DATA_ACK": {
+        "kind": "1",
+        "fileName": "Message",
+        "msgName": "IMMsgDataAck"
+      },
+      "CID_MSG_READ_ACK": {
+        "kind": "",
+        "fileName": "Message",
+        "msgName": ""
+      },
+      "CID_MSG_READ_NOTIFY": {
+        "kind": "",
+        "fileName": "Message",
+        "msgName": ""
+      },
+      "CID_MSG_TIME_REQUEST": {
+        "kind": "0",
+        "fileName": "Message",
+        "msgName": ""
+      },
+      "CID_MSG_TIME_RESPONSE": {
+        "kind": "1",
+        "fileName": "Message",
+        "msgName": ""
+      },
+      "CID_MSG_UNREAD_CNT_REQUEST": {
+        "kind": "0",
+        "fileName": "Message",
+        "msgName": "IMUnreadMsgCntReq"
+      },
+      "CID_MSG_UNREAD_CNT_RESPONSE": {
+        "kind": "1",
+        "fileName": "Message",
+        "msgName": "IMUnreadMsgCntRsp"
+      },
+      "CID_MSG_LIST_REQUEST": {
+        "kind": "0",
+        "fileName": "Message",
+        "msgName": ""
+      },
+      "CID_MSG_LIST_RESPONSE": {
+        "kind": "1",
+        "fileName": "Message",
+        "msgName": ""
+      },
+      "CID_MSG_GET_LATEST_MSG_ID_REQ": {
+        "kind": "0",
+        "fileName": "Message",
+        "msgName": ""
+      },
+      "CID_MSG_GET_LATEST_MSG_ID_RSP": {
+        "kind": "1",
+        "fileName": "Message",
+        "msgName": ""
+      },
+      "CID_MSG_GET_BY_MSG_ID_REQ": {
+        "kind": "0",
+        "fileName": "Message",
+        "msgName": ""
+      },
+      "CID_MSG_GET_BY_MSG_ID_RES": {
+        "kind": "1",
+        "fileName": "Message",
+        "msgName": ""
+      }
+    }
+  },
+  "SID_GROUP": {
+    "GroupCmdID": {
+      "CID_GROUP_NORMAL_LIST_REQUEST": {
+        "kind": "0",
+        "fileName": "Group",
+        "msgName": "IMNormalGroupListReq"
+      },
+      "CID_GROUP_NORMAL_LIST_RESPONSE": {
+        "kind": "1",
+        "fileName": "Group",
+        "msgName": "IMNormalGroupListRsp"
+      },
+      "CID_GROUP_INFO_REQUEST": {
+        "kind": "0",
+        "fileName": "Group",
+        "msgName": ""
+      },
+      "CID_GROUP_INFO_RESPONSE": {
+        "kind": "1",
+        "fileName": "Group",
+        "msgName": ""
+      },
+      "CID_GROUP_CREATE_REQUEST": {
+        "kind": "0",
+        "fileName": "Group",
+        "msgName": ""
+      },
+      "CID_GROUP_CREATE_RESPONSE": {
+        "kind": "1",
+        "fileName": "Group",
+        "msgName": ""
+      },
+      "CID_GROUP_CHANGE_MEMBER_REQUEST": {
+        "kind": "0",
+        "fileName": "Group",
+        "msgName": ""
+      },
+      "CID_GROUP_CHANGE_MEMBER_RESPONSE": {
+        "kind": "1",
+        "fileName": "Group",
+        "msgName": ""
+      },
+      "CID_GROUP_SHIELD_GROUP_REQUEST": {
+        "kind": "0",
+        "fileName": "Group",
+        "msgName": ""
+      },
+      "CID_GROUP_SHIELD_GROUP_RESPONSE": {
+        "kind": "1",
+        "fileName": "Group",
+        "msgName": ""
+      },
+      "CID_GROUP_CHANGE_MEMBER_NOTIFY": {
+        "kind": "",
+        "fileName": "Group",
+        "msgName": ""
+      }
+    }
+  },
+  "SID_FILE": {
+    "FileCmdID": {
+      "CID_FILE_LOGIN_REQ": {
+        "kind": "0",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_LOGIN_RES": {
+        "kind": "1",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_STATE": {
+        "kind": "",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_PULL_DATA_REQ": {
+        "kind": "0",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_PULL_DATA_RSP": {
+        "kind": "1",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_REQUEST": {
+        "kind": "0",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_RESPONSE": {
+        "kind": "1",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_NOTIFY": {
+        "kind": "",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_HAS_OFFLINE_REQ": {
+        "kind": "0",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_HAS_OFFLINE_RES": {
+        "kind": "1",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_ADD_OFFLINE_REQ": {
+        "kind": "0",
+        "fileName": "File",
+        "msgName": ""
+      },
+      "CID_FILE_DEL_OFFLINE_REQ": {
+        "kind": "0",
+        "fileName": "File",
+        "msgName": ""
+      }
+    }
+  },
+  "SID_SWITCH_SERVICE": {
+    "SwitchServiceCmdID": {
+      "CID_SWITCH_P2P_CMD": {
+        "kind": "",
+        "fileName": "Server",
+        "msgName": ""
+      }
+    }
+  },
+  "SID_OTHER": {
+    "OtherCmdID": {
+      "CID_OTHER_HEARTBEAT": {
+        "kind": "",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_STOP_RECV_PACKET": {
+        "kind": "",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_VALIDATE_REQ": {
+        "kind": "0",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_VALIDATE_RSP": {
+        "kind": "1",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_GET_DEVICE_TOKEN_REQ": {
+        "kind": "0",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_GET_DEVICE_TOKEN_RSP": {
+        "kind": "1",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_ROLE_SET": {
+        "kind": "",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_ONLINE_USER_INFO": {
+        "kind": "",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_MSG_SERV_INFO": {
+        "kind": "",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_USER_STATUS_UPDATE": {
+        "kind": "",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_USER_CNT_UPDATE": {
+        "kind": "",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_SERVER_KICK_USER": {
+        "kind": "1",
+        "fileName": "Other",
+        "msgName": "IMServerKickUser"
+      },
+      "CID_OTHER_LOGIN_STATUS_NOTIFY": {
+        "kind": "",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_PUSH_TO_USER_REQ": {
+        "kind": "0",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_PUSH_TO_USER_RSP": {
+        "kind": "1",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_GET_SHIELD_REQ": {
+        "kind": "0",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_GET_SHIELD_RSP": {
+        "kind": "1",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_FILE_TRANSFER_REQ": {
+        "kind": "0",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_FILE_TRANSFER_RSP": {
+        "kind": "1",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_FILE_SERVER_IP_REQ": {
+        "kind": "0",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_FILE_SERVER_IP_RSP": {
+        "kind": "1",
+        "fileName": "Other",
+        "msgName": ""
+      },
+      "CID_OTHER_IMRandomReq_REQ": {
+        "kind": "0",
+        "fileName": "Other",
+        "msgName": "IMRandomReq"
+      },
+      "CID_OTHER_IMRandomReq_RES": {
+        "kind": "1",
+        "fileName": "Other",
+        "msgName": "IMRandomRes"
+      }
+    }
+  }
+}

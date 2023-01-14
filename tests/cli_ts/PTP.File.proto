@@ -1,0 +1,39 @@
+syntax = "proto2";
+import "PTP.Common.proto";
+package PTP.File;
+option java_package = "com.ptp.im.protobuf";
+
+option optimize_for = LITE_RUNTIME;
+
+message FileImgUploadReq{
+  required string file_id = 1;
+  required uint32 file_part = 2;
+  required uint32 file_total_parts = 3;
+  required bytes file_data = 4;
+
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message FileImgUploadRes{
+  optional Common.ERR error = 1;
+  required string file_path = 2;
+
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message FileImgDownloadReq{
+  required string file_path = 1;
+
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}
+
+message FileImgDownloadRes{
+  optional Common.ERR error = 1;
+  optional bytes file_data = 2;
+
+  optional bytes attach_data = 20;
+  optional uint32 auth_uid = 21;
+}

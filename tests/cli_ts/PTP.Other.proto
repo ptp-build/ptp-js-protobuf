@@ -1,0 +1,19 @@
+syntax = "proto2";
+import "PTP.Common.proto";
+package PTP.Other;
+option java_package = "com.ptp.im.protobuf";
+
+option optimize_for = LITE_RUNTIME;
+
+message HeartBeatNotify{}
+
+
+message CaptchaReq{
+
+}
+
+message CaptchaRes{
+  required string captcha = 1;
+  required Common.ERR error = 2;
+}
+
