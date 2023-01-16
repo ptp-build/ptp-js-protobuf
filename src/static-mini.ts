@@ -26,8 +26,10 @@ var path = require("path");
 const pkg: any = require("../package.json");
 
 interface IOptions {
+  outCppCommandDir?:string,
   outDir?: string;
   outCpp?: string;
+  writeActionIfExists?: boolean;
   outCppTest?: string;
   genTs?: boolean;
   create?: boolean;
@@ -1869,7 +1871,7 @@ function static_mini(
     .pushLine("\n//module.exports = protobuf.util.global['default']\n")
     .pushLine("export default protobuf.util.global['default'];\n");
   callback(null, codeGen.toString());
-  const { outDir,outCpp,outCppTest } = config;
+  const { outDir,outCppCommandDir,outCpp,outCppTest,writeActionIfExists } = config;
   if(config.genTs && outDir){
     const namespaceData: any = {};
     writeModules(config, root, namespaceData);
@@ -1879,7 +1881,7 @@ function static_mini(
     //   path.join(outDir, "schema.json"),
     //   Buffer.from(JSON.stringify(schema, null, 2))
     // );
-    genFiles(outDir, schema,outCpp,outCppTest);
+    genFiles(outDir, schema,outCpp,outCppTest,outCppCommandDir,writeActionIfExists);
   }
 }
 
@@ -2215,16 +2217,14 @@ function handleNamespaceData(data: any) {
   return { msgFiles, enumFiles };
 }
 
-function genFiles(outDir: string, schema: any,outCpp?:string,outCppTest?:string) {
-  console.log("genFiles",{ outDir,outCpp});
+function genFiles(outDir: string, schema: any,outCpp?:string,outCppTest?:string,outCppCommandDir?:string,writeActionIfExists?:boolean) {
   const { msgFiles, enumFiles } = schema;
   // fs.writeFileSync(path.join(outDir, "BaseMsg.ts"), Buffer.from(render_BaseMsg()))
   const msgHandlerCode = render_msg_handler(msgFiles);
   // fs.writeFileSync(path.join(outDir, "MsgHandler.ts"), Buffer.from(msgHandlerCode))
   if(outCpp){
-    render_msg_cpp_handler(msgFiles,outCpp,outCppTest);
+    render_msg_cpp_handler(msgFiles,outCpp,outCppTest,outCppCommandDir,writeActionIfExists);
   }
-
   Object.keys(msgFiles).forEach((fileName: string) => {
     const { includeFiles, fileNamespace, msgs } = msgFiles[fileName];
 
@@ -2286,7 +2286,7 @@ function genFiles(outDir: string, schema: any,outCpp?:string,outCppTest?:string)
       );
     });
 
-    writeTest(outDir, fileNamespace, fileName, includeFiles, msgs, msgFiles);
+    writeTest(outDir, fileNamespace, fileName, includeFiles, msgs, msgFiles,writeActionIfExists);
   });
 }
 
@@ -2296,7 +2296,8 @@ function writeTest(
   fileName: string,
   includeFiles: string[],
   msgs: any[],
-  msgFiles: { [x: string]: { msgs: any[] } }
+  msgFiles: { [x: string]: { msgs: any[] } },
+  writeActionIfExists?:boolean
 ) {
   if (
     fileName !== "PTPCommon" &&
@@ -2384,7 +2385,7 @@ function writeTest(
       fileName,
       `${msg.name}.test.tsx`
     );
-    if (!fs.existsSync(pathName) && msg.name.indexOf("Req") > 0) {
+    if ((writeActionIfExists || !fs.existsSync(pathName)) && msg.name.indexOf("Req") > 0) {
       fs.writeFileSync(pathName, Buffer.from(codeTests));
     }
   });

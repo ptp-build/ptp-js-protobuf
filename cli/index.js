@@ -35,6 +35,8 @@ exports.main = function (argv) {
   var genTs = getOption(argv, "gen-ts");
   var outCpp = getOption(argv, "out-cpp");
   var outCppTest = getOption(argv, "out-cpp-test");
+  var outCppCommandDir = getOption(argv, "out-cpp-command-dir");
+  var writeActionIfExists = getOption(argv, "write-action-if-exists");
 
   if(pbDir){
     fs.readdirSync(pbDir).forEach(file=>{
@@ -70,17 +72,20 @@ exports.main = function (argv) {
   }
 
   // create *.js
-  console.log(`creating ${name}.js...`);
   argv = argv.concat([
     "--target",
     target,
     "--comments",
+    '--out-cpp-command-dir',
+    outCppCommandDir,
     '--out-cpp',
     outCpp,
     '--out-cpp-test',
     outCppTest,
     "--gen-ts",
     genTs == "on"  ? true :false,
+    "--writeActionIfExists",
+    writeActionIfExists == "on"  ? true :false,
     "--force-long",
     "true",
     "--out",
@@ -88,7 +93,7 @@ exports.main = function (argv) {
     "--outDir",
     path.resolve(output),
   ]);
-
+  console.log(`creating ${name}.js...`,argv);
   var ret = pbcli.main(argv);
   if (typeof ret === "number" && ret > 0) {
     return ret;

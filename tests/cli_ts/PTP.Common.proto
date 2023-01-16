@@ -4,110 +4,6 @@ option java_package = "com.ptp.im.protobuf";
 
 option optimize_for = LITE_RUNTIME;
 
-enum SID{
-  S_AUTH = 0x0001;
-  S_BUDDY = 0x0002;
-  S_MSG = 0x0003;
-  S_GROUP = 0x0004;
-  S_FILE = 0x0005;
-  S_SERVER = 0x0006;
-  S_OTHER = 0x0007;
-  S_SWITCH = 0x0008;
-}
-
-enum CID_AUTH{
-  CID_AuthLoginReq = 0x0101;
-  CID_AuthLoginRes = 0x0102;
-  CID_AuthLogoutReq = 0x0103;
-  CID_AuthLogoutRes = 0x0104;
-  CID_AuthCaptchaReq = 0x0105;
-  CID_AuthCaptchaRes = 0x0106;
-}
-
-enum CID_BUDDY{
-  CID_BuddyStatNotify = 0x0201;
-  CID_BuddyGetListReq = 0x0202;
-  CID_BuddyGetListRes = 0x0203;
-  CID_BuddyGetALLReq = 0x0204;
-  CID_BuddyGetALLRes = 0x0205;
-  CID_BuddyGetStatReq = 0x0206;
-  CID_BuddyGetStatRes = 0x0207;
-  CID_BuddyModifyReq = 0x0208;
-  CID_BuddyModifyRes = 0x0209;
-  CID_BuddyModifyNotify = 0x020a;
-  CID_BuddyModifyUpdatePair = 0x020b;
-  CID_BuddyImportContactsReq = 0x020c;
-  CID_BuddyImportContactsRes = 0x020d;
-  CID_BuddyQueryListReq = 0x020e;
-  CID_BuddyQueryListRes = 0x020f;
-}
-
-enum CID_MSG{
-  CID_MsgReq = 0x0301;
-  CID_MsgRes = 0x0302;
-  CID_MsgReadAckReq = 0x0303;
-  CID_MsgReadNotify = 0x0304;
-  CID_MsgGetMaxIdReq = 0x0305;
-  CID_MsgGetMaxIdRes = 0x0306;
-  CID_MsgGetByIdsReq = 0x0307;
-  CID_MsgGetByIdsRes = 0x0308;
-  CID_MsgNotify = 0x0309;
-  CID_MsgUnNotify = 0x030a;
-}
-
-enum CID_GROUP{
-  CID_GroupPreCreateReq = 0x0401;
-  CID_GroupPreCreateRes = 0x0402;
-  CID_GroupCreateReq = 0x0403;
-  CID_GroupCreateRes = 0x0404;
-  CID_GroupModifyReq = 0x0405;
-  CID_GroupModifyRes = 0x0406;
-  CID_GroupModifyNotify = 0x0407;
-  CID_GroupChangeMemberReq = 0x0408;
-  CID_GroupChangeMemberRes = 0x0409;
-  CID_GroupChangeMemberNotify = 0x040a;
-  CID_GroupGetListReq = 0x040b;
-  CID_GroupGetListRes = 0x040c;
-  CID_GroupUnreadMsgReq = 0x040d;
-  CID_GroupUnreadMsgRes = 0x040e;
-  CID_GroupRemoveSessionReq = 0x040f;
-  CID_GroupRemoveSessionRes = 0x0411;
-  CID_GroupRemoveSessionNotify = 0x0412;
-  CID_GroupGetMembersListReq = 0x0413;
-  CID_GroupGetMembersListRes = 0x0414;
-}
-
-enum CID_FILE{
-  CID_FileImgUploadReq = 0x0501;
-  CID_FileImgUploadRes = 0x0502;
-  CID_FileImgDownloadReq = 0x0503;
-  CID_FileImgDownloadRes = 0x0504;
-}
-
-enum CID_SERVER{
-  CID_ServerLoginReq = 0x0601;
-  CID_ServerLoginRes = 0x0602;
-}
-
-enum CID_OTHER{
-  CID_HeartBeatNotify = 0x0701;
-  CID_CaptchaReq = 0x0702;
-  CID_CaptchaRes = 0x0703;
-}
-
-enum CID_SWITCH{
-  CID_SwitchPtpReq = 0x0801;
-  CID_SwitchPtpRes = 0x0802;
-  CID_SwitchPtpNotify = 0x0803;
-  CID_SwitchDevicesReq = 0x0804;
-  CID_SwitchDevicesNotify = 0x0805;
-}
-
-enum QRCODE_TYPE{
-  QRCODE_TYPE_MNEMONIC_SHARE = 1;
-  QRCODE_TYPE_NAME_CARD = 2;
-}
-
 enum ERR{
   NO_ERROR = 0;
   E_SYSTEM = 1;
@@ -124,7 +20,6 @@ enum ERR{
   E_USERNAME_INVALID = 12;
   E_CLIENT = 1003;
   E_CLIENT_TIMEOUT = 1004;
-
   E_SERVER_NOT_FOUND = 404;
 }
 

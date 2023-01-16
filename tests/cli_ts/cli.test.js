@@ -9,11 +9,14 @@ it('cli-ts', function () {
     var testcase = new TestCase(name, [],"default","protobuf");
     let outCpp = __dirname+"/gen/cpp"
     let outCppTest = __dirname+"/gen/cpp-test"
-    outCpp = "/Users/jack/projects/ptp/src/ptp_server/actions"
-    outCppTest = "/Users/jack/projects/ptp/tests/test_server/actions"
+    let outCppCommandDir = __dirname+"/gen/cpp-test"
+    // outCpp = "/Users/jack/projects/ptp/src/ptp_server/actions"
+    // outCppTest = "/Users/jack/projects/ptp/tests/test_server/actions"
     testcase.generate([
         '--keep-case' ,
         '--out-cpp',
+        outCppCommandDir,
+        '--out-cpp-command-dir',
         outCpp,
         '--out-cpp-test',
         outCppTest,
