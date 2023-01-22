@@ -80,8 +80,14 @@ export const render_msg_cpp_handler = (msgFiles: any,outCpp?:string,outCppTest?:
     return `${row[0]} = ${row[1]},`
   }).join("\n  ");
 
-  const pathname_ActionCommandIds = path.join(m_outCppCommandDir, `ActionCommands.h`);
-  fs.writeFileSync(pathname_ActionCommandIds, Buffer.from(`/*================================================================
+
+  const ttt1 = cids.map((row:any)=>{
+    return `\n        case ${row[0]}:\n            return to_string(cid) + ":${row[0]}";`
+  }).join("");
+
+  const pathname_ActionCommandIds_h = path.join(m_outCppCommandDir, `ActionCommands.h`);
+  const pathname_ActionCommandIds = path.join(m_outCppCommandDir, `ActionCommands.cpp`);
+  fs.writeFileSync(pathname_ActionCommandIds_h, Buffer.from(`/*================================================================
  *   Copyright (C) 2022 All rights reserved.
  *
  *   filename：  ActionCommands.h
@@ -94,11 +100,28 @@ export const render_msg_cpp_handler = (msgFiles: any,outCpp?:string,outCppTest?:
 ================================================================*/
 #ifndef __ActionCommands_H__
 #define __ActionCommands_H__
-  
-enum ActionCommands{
+
+#include <string>
+
+using namespace std;
+
+enum ActionCommands {
   ${ttt}
 };
+
+string getActionCommandsName(ActionCommands cid);
+
 #endif /* __ActionCommands_H__ */
+`));
+
+fs.writeFileSync(pathname_ActionCommandIds, Buffer.from(`#include "ActionCommands.h"
+
+string getActionCommandsName(ActionCommands cid){
+    switch (cid) {${ttt1}
+        default:
+            return to_string(cid);
+    }
+}
 `));
 
   const test_dir_path = path.join(m_outCppTest);
@@ -157,13 +180,12 @@ function render_actions({
     msg_response_send = `\n                CacheManager *pCacheManager = CacheManager::getInstance();
                 CacheConn *pCacheConn = pCacheManager->GetCacheConn(CACHE_GROUP_INSTANCE);
                 while (true) {
-                    auto auth_uid = msg.auth_uid();
                     if (!pCacheConn) {
                         error = PTP::Common:: E_SYSTEM;
                         DEBUG_E("error pCacheConn");
                         break;
                     }
-                    
+                    auto auth_uid = msg.auth_uid();
                     msg_rsp.set_error(error);
                     msg_rsp.set_auth_uid(auth_uid);
                     break;
@@ -226,6 +248,7 @@ function render_actions({
 #include "${file_name}.h"
 #include "PTP.${sid}.pb.h"
 #include "MsgSrvConn.h"
+#include "models/Model${sid}.h"
 
 using namespace PTP::Common;
 
@@ -301,6 +324,7 @@ function render_notify({ item, pair_maps, root, sid, file_name, date }: any) {
 ================================================================*/
 #include "${file_name}.h"
 #include "PTP.${sid}.pb.h"
+#include "models/Model${sid}.h"
 
 using namespace PTP::Common;
 
@@ -423,87 +447,13 @@ pdu_handler_t CHandlerMap::GetHandler(uint32_t pdu_cid)
 
 function render_model({ sid, actions }: any) {
   const file_name = `Model${sid}`;
-  const dir_path = path.join( "src", "models");
-  const pathname = path.join(dir_path, `Model${sid}.cpp`);
-  const pathname_h = path.join(dir_path, `Model${sid}.h`);
-
+  const pathname = path.join(m_outCpp, "models", `Model${sid}.cpp`);
+  const pathname_h = path.join(m_outCpp,"models", `Model${sid}.h`);
   const date = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-  });
-  const funs: any = [];
-  const fun_main: any = [];
-
-  actions.forEach((action: any) => {
-    let res_lines = [];
-    if (action.cid_rsp) {
-      fun_main.push(`void CModel${sid}::${action.cid}(PTP::${sid}::${action.cid}* msg, PTP::${sid}::${action.cid_rsp}* msg_rsp, ERR& error)
-{
-    CacheManager *pCacheManager = CacheManager::getInstance();
-    CacheConn *pCacheConn = pCacheManager->GetCacheConn("group");
-
-    while (true) {
-        if (!pCacheConn) {
-            error = PTP::Common::E_SYSTEM;
-            log_error("error pCacheConn");
-            break;
-        }
-        log("${action.cid}...");
-        // auto fromUserId = msg->auth_uid();
-        break;
-    }
-    
-    if (pCacheConn) {
-        pCacheManager->RelCacheConn(pCacheConn);
-    }
-}`);
-      funs.push(
-        `void ${action.cid}(PTP::${sid}::${action.cid}* msg, PTP::${sid}::${action.cid_rsp}* msg_rsp, ERR& error);`
-      );
-
-      res_lines = action.fields_rsp
-        .filter((i: any) => i.name !== "attach_data")
-        .map((field: any) => {
-          return `//auto ${field.name} = msg_rsp.${field.name}();
-    //log("${field.name}: %s",${field.name});
-            `;
-        });
-    } else {
-      fun_main.push(`void CModel${sid}::${action.cid}(PTP::${sid}::${action.cid}* msg, ERR& error)
-{
-    CacheManager *pCacheManager = CacheManager::getInstance();
-    CacheConn *pCacheConn = pCacheManager->GetCacheConn("group");
-
-    while (true) {
-        if (!pCacheConn) {
-            error = PTP::Common::E_SYSTEM;
-            log_error("error pCacheConn");
-            break;
-        }
-        log("${action.cid}...");
-        // auto fromUserId = msg->auth_uid();
-        break;
-    }
-    
-    if (pCacheConn) {
-        pCacheManager->RelCacheConn(pCacheConn);
-    }
-}`);
-      funs.push(
-        `void ${action.cid}(PTP::${sid}::${action.cid}* msg, ERR& error);`
-      );
-
-      res_lines = [];
-    }
-
-    const req_lines = action.fields
-      .filter((i: any) => i.name !== "attach_data")
-      .map((field: any) => {
-        return `//msg.set_${field.name}();`;
-      });
-
   });
 
   let code_h = `/*================================================================
@@ -529,12 +479,9 @@ using namespace PTP::Common;
 class CModel${sid} {
 public:
 virtual ~CModel${sid}();
-
     static CModel${sid}* getInstance();
-    ${funs.join("\n    ")}
 private:
     CModel${sid}();
-    
 private:
     static CModel${sid}*    m_pInstance;
 };
@@ -575,14 +522,12 @@ CModel${sid}* CModel${sid}::getInstance()
     }
     return m_pInstance;
 }
-
-${fun_main.join("\n")}
-
 `;
 
   actions.forEach((action: any) => {
     const req_lines = action.fields
-        // .filter((i: any) => i.name !== "attach_data")
+        .filter((i: any) => i.name !== "attach_data")
+        .filter((i: any) => i.name !== "auth_uid")
         .map((field: any) => {
           return `//msg_${action.cid}.set_${field.name}();`;
         });
@@ -591,73 +536,82 @@ ${fun_main.join("\n")}
     if(action.cid_rsp){
       res_lines = action.fields_rsp
           .filter((i: any) => i.name !== "error")
+          .filter((i: any) => i.name !== "attach_data")
           .map((field: any) => {
             if(field.fieldType == 'string' || field.isBytes){
               return `//auto ${field.name} = msg_${action.cid_rsp}.${field.name}();
-        //DEBUG_I("${field.name}: %s",${field.name}.c_str());`;
+            //DEBUG_I("${field.name}: %s",${field.name}.c_str());`;
             }else if(field.fieldType == 'number'){
               return `//auto ${field.name} = msg_${action.cid_rsp}.${field.name}();
-        //DEBUG_I("${field.name}: %d",${field.name});`;
+            //DEBUG_I("${field.name}: %d",${field.name});`;
             }else{
               return `//auto ${field.name} = msg_${action.cid_rsp}.${field.name}();
-        //DEBUG_I("${field.name}: %p",${field.name});`
+            //DEBUG_I("${field.name}: %p",${field.name});`
             }
           });
-      rsp_code = `ASSERT_EQ(request_${action.cid}.GetResponsePdu()->GetCommandId(),CID_${action.cid});
-        ASSERT_EQ(request_${action.cid}.IsNext(),true);
+      rsp_code = `if(request_${action.cid}.HasNext()){
+        auto pdu_next_${action.cid} = request_${action.cid}.GetNextResponsePdu();
+        ASSERT_EQ(pdu_next_${action.cid}->GetSeqNum(),sep_no);
+        ASSERT_EQ(pdu_next_${action.cid}->GetCommandId(),CID_${action.cid});
 
         CRequest request_next_${action.cid};
         request_next_${action.cid}.SetIsBusinessConn(true);
-        request_next_${action.cid}.SetRequestPdu(request_${action.cid}.GetResponsePdu());
-        ACTION_BUDDY::${action.cid}Action(&request_next_${action.cid});
-
-        PTP::${sid}::${action.cid_rsp} msg_${action.cid_rsp};
-        auto res = msg_${action.cid_rsp}.ParseFromArray(request_next_${action.cid}.GetResponsePdu()->GetBodyData(), (int)request_next_${action.cid}.GetResponsePdu()->GetBodyLength());
-        ASSERT_EQ(res,true);
-        ASSERT_EQ(request_next_${action.cid}.GetResponsePdu()->GetCommandId(),CID_${action.cid_rsp});
-        auto error = msg_${action.cid_rsp}.error();
-        ASSERT_EQ(error,NO_ERROR);
-        ${res_lines.join("\n        ")}
+        request_next_${action.cid}.SetRequestPdu(pdu_next_${action.cid});
         
-        CRequest request_${action.cid_rsp};
-        request_${action.cid_rsp}.SetIsBusinessConn(false);
-        request_${action.cid_rsp}.SetRequestPdu(request_next_${action.cid}.GetResponsePdu());
-        ACTION_${sid.toUpperCase()}::${action.cid_rsp}Action(&request_${action.cid_rsp});
-        PTP::${sid}::${action.cid_rsp} msg_final_${action.cid_rsp};
-        res = msg_final_${action.cid_rsp}.ParseFromArray(request_${action.cid_rsp}.GetResponsePdu()->GetBodyData(), (int)request_${action.cid_rsp}.GetResponsePdu()->GetBodyLength());
-        ASSERT_EQ(res,true);
-        ASSERT_EQ(msg_final_${action.cid_rsp}.GetResponsePdu()->GetCommandId(),CID_${action.cid_rsp});
-        error = msg_final_${action.cid_rsp}.error();
-        ASSERT_EQ(error,NO_ERROR);`
+        ACTION_${sid.toUpperCase()}::${action.cid}Action(&request_next_${action.cid});
+
+        if(request_next_${action.cid}.HasNext()){}
+        if(request_next_${action.cid}.GetResponsePdu()){
+            PTP::${sid}::${action.cid_rsp} msg_${action.cid_rsp};
+            auto res = msg_${action.cid_rsp}.ParseFromArray(request_next_${action.cid}.GetResponsePdu()->GetBodyData(), (int)request_next_${action.cid}.GetResponsePdu()->GetBodyLength());
+            ASSERT_EQ(res,true);
+            ASSERT_EQ(request_next_${action.cid}.GetResponsePdu()->GetCommandId(),CID_${action.cid_rsp});
+            auto error = msg_${action.cid_rsp}.error();
+            ASSERT_EQ(error,NO_ERROR);
+            ${res_lines.join("\n            ")}
+            
+            CRequest request_${action.cid_rsp};
+            request_${action.cid_rsp}.SetIsBusinessConn(false);
+            request_${action.cid_rsp}.SetHandle(pMsgConn->GetHandle());
+            request_${action.cid_rsp}.SetRequestPdu(request_next_${action.cid}.GetResponsePdu());
+            
+            ACTION_${sid.toUpperCase()}::${action.cid_rsp}Action(&request_${action.cid_rsp});
+            
+            if(request_${action.cid_rsp}.HasNext()){}
+            if(request_${action.cid_rsp}.GetResponsePdu()){
+                PTP::${sid}::${action.cid_rsp} msg_final_${action.cid_rsp};
+                res = msg_final_${action.cid_rsp}.ParseFromArray(request_${action.cid_rsp}.GetResponsePdu()->GetBodyData(), (int)request_${action.cid_rsp}.GetResponsePdu()->GetBodyLength());
+                ASSERT_EQ(res,true);
+                ASSERT_EQ(request_${action.cid_rsp}.GetResponsePdu()->GetCommandId(),CID_${action.cid_rsp});
+                error = msg_final_${action.cid_rsp}.error();
+                ASSERT_EQ(error,NO_ERROR);
+            }
+        }
+      }`
     }
     let code_test = `#include <gtest/gtest.h>
 
 #include "test_init.h"
 #include "ptp_server/actions/${action.cid.replace("Req","")}Action.h"
+#include "ptp_server/actions/models/Model${sid}.h"
 #include "PTP.${sid}.pb.h"
 
 using namespace PTP::Common;
 
 TEST(test_${sid}, ${action.cid.replace("Req","")}Action) {
-    test_int();
+    auto *pMsgConn = test_int_msg_conn();
     PTP::${sid}::${action.cid} msg_${action.cid};
     ${req_lines.join("\n    ")}
-    uint16_t sep_no = 101;
+    uint16_t sep_no = 1;
     ImPdu pdu_${action.cid};
     pdu_${action.cid}.SetPBMsg(&msg_${action.cid},CID_${action.cid},sep_no);
     CRequest request_${action.cid};
-    auto pMsgConn = new CMsgSrvConn();
-    pMsgConn->SetHandle(time(nullptr));
-    pMsgConn->SetUserId(99999+1);
     request_${action.cid}.SetHandle(pMsgConn->GetHandle());
-    addMsgSrvConnByHandle(request_${action.cid}.GetHandle(),pMsgConn);
     request_${action.cid}.SetRequestPdu(&pdu_${action.cid});
-    ACTION_${sid.toUpperCase()}::${action.cid}Action(&request_${action.cid});
-    if(request_${action.cid}.GetResponsePdu()){
-        ASSERT_EQ(request_${action.cid}.GetResponsePdu()->GetSeqNum(),sep_no);
-        ${rsp_code}
-    }
     
+    ACTION_${sid.toUpperCase()}::${action.cid}Action(&request_${action.cid});
+    
+    ${rsp_code}
 }
 
 int main(int argc, char **argv) {
@@ -677,23 +631,26 @@ int main(int argc, char **argv) {
     }
     const test_name = "test_" +sid+"_"+ action.cid.replace("Req","");
     cmake.push(`add_executable(${test_name}.run ${test_name}.cpp)
-target_link_libraries(${test_name}.run PRIVATE gtest_main test_init ptp_global ptp_protobuf ptp_server)`)
+target_link_libraries(${test_name}.run PRIVATE gtest_main test_init ptp_net ptp_global ptp_protobuf ptp_server)`)
   })
 
   const test_dir_path = path.join(m_outCppTest);
 
-  if (m_writeActionIfExists || !fs.existsSync(test_dir_path)) {
+  if (!fs.existsSync(test_dir_path)) {
     fs.mkdirSync(test_dir_path, { recursive: true });
   }
 
-  if (!fs.existsSync(dir_path)) {
-    // fs.mkdirSync(dir_path, { recursive: true });
+  const test_dir_model_path = path.join(m_outCpp,"models");
+
+  if (!fs.existsSync(test_dir_model_path)) {
+    fs.mkdirSync(test_dir_model_path, { recursive: true });
   }
+
   if (!fs.existsSync(pathname_h)) {
-    // fs.writeFileSync(pathname_h, Buffer.from(code_h));
+    fs.writeFileSync(pathname_h, Buffer.from(code_h));
   }
   if (!fs.existsSync(pathname)) {
-    // fs.writeFileSync(pathname, Buffer.from(code));
+    fs.writeFileSync(pathname, Buffer.from(code));
   }
 }
 
