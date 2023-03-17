@@ -1,5 +1,7 @@
 import fs from "fs";
 import path from "path";
+import {render_msg_handler} from "./index";
+let m_outDir = "";
 let m_outCpp = "";
 let m_outCppTest = "";
 let m_outCppCommandDir = "";
@@ -8,7 +10,8 @@ const author = "Barry";
 const email = "dev.crypto@proton.me";
 let cmake: string[] = [];
 
-export const render_msg_cpp_handler = (msgFiles: any,outCpp?:string,outCppTest?:string,outCppCommandDir?:string,writeActionIfExists?:boolean) => {
+export const render_msg_cpp_handler = (msgFiles: any,outDir:any,outCpp?:string,outCppTest?:string,outCppCommandDir?:string,writeActionIfExists?:boolean) => {
+  m_outDir = outDir!;
   m_outCpp = outCpp!;
   m_outCppCommandDir = outCppCommandDir!;
   m_outCppTest = outCppTest!;
@@ -80,6 +83,14 @@ export const render_msg_cpp_handler = (msgFiles: any,outCpp?:string,outCppTest?:
     return `${row[0]} = ${row[1]},`
   }).join("\n  ");
 
+  const ttt_js = cids.map((row:any)=>{
+    return `${row[0]} = ${row[1]},`
+  }).join("\n  ");
+
+
+  const ttt_js1 = cids.map((row:any)=>{
+    return `${row[1]}: "${row[0]}",`
+  }).join("\n  ");
 
   const ttt1 = cids.map((row:any)=>{
     return `\n        case ${row[0]}:\n            return to_string(cid) + ":${row[0]}";`
@@ -123,6 +134,24 @@ string getActionCommandsName(ActionCommands cid){
     }
 }
 `));
+
+  const jsActionCommands = `export enum ActionCommands {
+  ${ttt_js}
+}
+
+export const ActionCommandsName = {
+  ${ttt_js1}
+};
+
+export const getActionCommandsName = (cid:ActionCommands)=>{
+   return ActionCommandsName[cid] || cid.toString();
+}
+
+`;
+  fs.writeFileSync(path.join(outDir, "ActionCommands.ts"), Buffer.from(jsActionCommands))
+  //
+  // const msgHandlerCode = render_msg_handler(msgFiles);
+  // fs.writeFileSync(path.join(outDir, "MsgHandler.ts"), Buffer.from(msgHandlerCode))
 
   const test_dir_path = path.join(m_outCppTest);
   fs.writeFileSync(path.join(test_dir_path,"CMakeLists.txt"), Buffer.from(cmake.join("\n\n")));

@@ -10,6 +10,7 @@ import { VERSION_STR } from "./version";
 import { SimpleCodeGen } from "./codegen";
 
 import {
+  render_BaseMsg,
   render_enums,
   render_Interfaces,
   render_Msg,
@@ -2219,11 +2220,10 @@ function handleNamespaceData(data: any) {
 
 function genFiles(outDir: string, schema: any,outCpp?:string,outCppTest?:string,outCppCommandDir?:string,writeActionIfExists?:boolean) {
   const { msgFiles, enumFiles } = schema;
-  // fs.writeFileSync(path.join(outDir, "BaseMsg.ts"), Buffer.from(render_BaseMsg()))
-  const msgHandlerCode = render_msg_handler(msgFiles);
-  // fs.writeFileSync(path.join(outDir, "MsgHandler.ts"), Buffer.from(msgHandlerCode))
+  fs.writeFileSync(path.join(outDir, "BaseMsg.ts"), Buffer.from(render_BaseMsg()))
+
   if(outCpp){
-    render_msg_cpp_handler(msgFiles,outCpp,outCppTest,outCppCommandDir,writeActionIfExists);
+    render_msg_cpp_handler(msgFiles,outDir,outCpp,outCppTest,outCppCommandDir,writeActionIfExists);
   }
   Object.keys(msgFiles).forEach((fileName: string) => {
     const { includeFiles, fileNamespace, msgs } = msgFiles[fileName];
@@ -2234,7 +2234,7 @@ function genFiles(outDir: string, schema: any,outCpp?:string,outCppTest?:string,
 
     if ("PTPCommon" === fileName) {
       let code: string = "// DO NOT EDIT\n";
-      code += `import BaseMsg from '../BaseMsg';\nimport type { Pdu } from '../Pdu';\n\n`;
+      code += `import BaseMsg from '../BaseMsg';\nimport type { Pdu } from '../BaseMsg';\n\n`;
       if (enumFiles[fileName]) {
         enumFiles[fileName].forEach((item: string) => {
           code += render_enums(item);
@@ -2303,7 +2303,7 @@ function writeTest(
     fileName !== "PTPCommon" &&
     !fs.existsSync(path.join(outDir, "__tests__", fileName))
   ) {
-    fs.mkdirSync(path.join(outDir, "__tests__", fileName), { recursive: true });
+    //fs.mkdirSync(path.join(outDir, "__tests__", fileName), { recursive: true });
   }
   msgs.forEach((msg: any) => {
     let codeTests = `import { describe, expect } from '@jest/globals';\n\n`;
@@ -2386,7 +2386,7 @@ function writeTest(
       `${msg.name}.test.tsx`
     );
     if ((writeActionIfExists || !fs.existsSync(pathName)) && msg.name.indexOf("Req") > 0) {
-      fs.writeFileSync(pathName, Buffer.from(codeTests));
+      //fs.writeFileSync(pathName, Buffer.from(codeTests));
     }
   });
 }
