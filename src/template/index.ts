@@ -8,30 +8,26 @@ export function render_Msg(name: string, fileNamespace: string[],isBaseFile?: bo
   //   const sid = fileNamespace[1]
   //
   // }
-  h = `
-    this.setCommandId(ActionCommands.CID_${name});`
-  tt = `import { ActionCommands } from '../ActionCommands';
-`
+  h = ``
+  tt = ``
   let ttt = "";
   let tttt = "";
   if(!isBaseFile){
+    tt = `import { ActionCommands } from '../ActionCommands';
+`
     tttt = "default "
     ttt = `import type { Pdu } from '../BaseMsg';
 import type { ${name}_Type } from './types';\n\n`
+    h = `
+    this.setCommandId(ActionCommands.CID_${name});`;
   }
 
   return `${tt}${ttt}export ${tttt}class ${name} extends BaseMsg {
   constructor(msg?: ${name}_Type) {
     super('${fileNamespace.join(".")}.${name}', msg);${h}
   }
-  decode(data: Uint8Array): ${name}_Type {
-    return this.__D(data);
-  }
-  pack(): Pdu {
-    return this.__pack();
-  }
-  static parseMsg(pdu : Pdu) {
-    return new ${name}().decode(pdu.getPbBody());
+  static parseMsg(pdu : Pdu): ${name}_Type {
+    return new ${name}().decode(pdu.body());
   }
 }
 `
@@ -229,6 +225,10 @@ export class Pdu {
   getPbBody(): Uint8Array {
     return this._pbBody;
   }
+  
+  body(): Uint8Array {
+    return this._pbBody;
+  }
 
   getPbBodyLength(): number {
     return this._pbBody.length;
@@ -320,6 +320,12 @@ export default class BaseMsg {
   }
   encode(): Uint8Array {
     return this.__E();
+  }
+  decode(data: Uint8Array) {
+    return this.__D(data);
+  }
+  pack(): Pdu {
+    return this.__pack();
   }
   toHex(): string {
     return Buffer.from(this.__E()).toString('hex');
