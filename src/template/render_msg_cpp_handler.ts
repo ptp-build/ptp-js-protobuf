@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import {render_msg_handler} from "./index";
 let m_outDir = "";
 let m_outCpp = "";
 let m_outCppTest = "";

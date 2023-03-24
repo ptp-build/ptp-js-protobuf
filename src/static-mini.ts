@@ -2233,26 +2233,40 @@ function genFiles(outDir: string, schema: any,outCpp?:string,outCppTest?:string,
     }
 
     if ("PTPCommon" === fileName) {
-      let code: string = "// DO NOT EDIT\n";
-      code += `import BaseMsg from '../BaseMsg';\nimport type { Pdu } from '../BaseMsg';\n\n`;
+      let code = ""
       if (enumFiles[fileName]) {
         enumFiles[fileName].forEach((item: string) => {
           code += render_enums(item);
         });
       }
+      let code_names = "";
       msgs.forEach((msg: any) => {
         code += render_Interfaces(msg.name, msg.fields);
         code += "\n";
-        code += render_Msg(msg.name, fileNamespace, true);
+        let code1: string = "// DO NOT EDIT\n";
+        code1 += `import BaseMsg from '../BaseMsg';\n`;
+        code1 += render_Msg(msg.name, fileNamespace, false,"types",true);
+        code_names += `export { default as ${msg.name} } from './${msg.name}';\n`;
+        if (!fs.existsSync(path.join(outDir, fileName, `${msg.name}.ts`))) {
+          fs.writeFileSync(
+              path.join(outDir, fileName, `${msg.name}.ts`),
+              Buffer.from(code1)
+          );
+        }
       });
       fs.writeFileSync(
         path.join(outDir, fileName, `index.ts`),
-        Buffer.from(code)
+        Buffer.from(code_names)
+      );
+
+      fs.writeFileSync(
+          path.join(outDir, fileName, `types.ts`),
+          Buffer.from(code)
       );
     } else {
       let code1: string = "// DO NOT EDIT\n";
       includeFiles.forEach((name: string) => {
-        code1 += `import type * as ${name} from '../${name}';\n`;
+        code1 += `import type * as ${name} from '../${name}/types';\n`;
       });
       code1 += "\n";
       let code_names = "";
@@ -2261,12 +2275,12 @@ function genFiles(outDir: string, schema: any,outCpp?:string,outCppTest?:string,
         code += `import BaseMsg from '../BaseMsg';\n`;
         code += render_Msg(msg.name, fileNamespace, false);
         code_names += `export { default as ${msg.name} } from './${msg.name}';\n`;
-        if (!fs.existsSync(path.join(outDir, fileName, `${msg.name}.ts`))) {
+        //if (!fs.existsSync(path.join(outDir, fileName, `${msg.name}.ts`))) {
           fs.writeFileSync(
             path.join(outDir, fileName, `${msg.name}.ts`),
             Buffer.from(code)
           );
-        }
+        //}
         code1 += render_Interfaces(msg.name, msg.fields);
       });
       fs.writeFileSync(

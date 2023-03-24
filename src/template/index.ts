@@ -1,7 +1,4 @@
-import fs from "fs";
-import path from "path";
-
-export function render_Msg(name: string, fileNamespace: string[],isBaseFile?: boolean) {
+export function render_Msg(name: string, fileNamespace: string[],isBaseFile?: boolean,typesName?:string,hideCmd?:boolean) {
   let h = ""
   let tt = "";
   // if(!isBaseFile && name.substring(name.length -3) !== 'Res'){
@@ -12,19 +9,23 @@ export function render_Msg(name: string, fileNamespace: string[],isBaseFile?: bo
   tt = ``
   let ttt = "";
   let tttt = "";
-  if(!isBaseFile){
-    tt = `import { ActionCommands } from '../ActionCommands';
+
+  tt = hideCmd ? "": `import { ActionCommands } from '../ActionCommands';
 `
-    tttt = "default "
-    ttt = `import type { Pdu } from '../BaseMsg';
-import type { ${name}_Type } from './types';\n\n`
-    h = `
+  h = hideCmd ? "" : `
     this.setCommandId(ActionCommands.CID_${name});`;
-  }
+
+  tttt = "default "
+  ttt = `import type { Pdu } from '../BaseMsg';
+import type { ${name}_Type } from './${!typesName ? "types":typesName}';\n\n`
+
+
 
   return `${tt}${ttt}export ${tttt}class ${name} extends BaseMsg {
+  public msg?: ${name}_Type
   constructor(msg?: ${name}_Type) {
     super('${fileNamespace.join(".")}.${name}', msg);${h}
+    this.msg = msg;
   }
   static parseMsg(pdu : Pdu): ${name}_Type {
     return new ${name}().decode(pdu.body());
@@ -50,6 +51,9 @@ export default class ${name}Parser extends ${name} {
 export const render_Interfaces = (name:string, fields: any) => {
   const lines:string[] = []
   fields.forEach((field:any)=>{
+    if(field.fieldType === 'double'){
+      field.fieldType = "number"
+    }
     lines.push(`${field.name}${field.isRequired ? "":"?"}: ${field.fieldType}`)
   })
   const t = lines.length > 0 ? `\n  ${lines.join(";\n  ")};\n` : ""
@@ -296,7 +300,7 @@ let seq_num = 0;
 
 export default class BaseMsg {
   private __cid?: any;
-  private __msg?: any;
+  public msg?: any;
   private __pb: any;
   constructor(namespace: string, msg?: any) {
     const t = namespace.split('.');
@@ -307,16 +311,16 @@ export default class BaseMsg {
       pb = pb[k];
     } while (t.length > 0);
     this.__pb = pb;
-    this.__setMsg(msg);
+    this.setMsg(msg);
   }
   protected setCommandId(cid: any) {
     this.__cid = cid;
   }
-  protected __setMsg(msg: any) {
-    this.__msg = msg;
+  setMsg(msg: any) {
+    this.msg = msg;
   }
-  protected __getMsg() {
-    return this.__msg;
+  getMsg() {
+    return this.msg;
   }
   encode(): Uint8Array {
     return this.__E();
@@ -337,7 +341,7 @@ export default class BaseMsg {
     return this.__D(Buffer.from(hexStr, 'hex'));
   }
   protected __E(): Uint8Array {
-    const obj = this.__pb.create(this.__getMsg());
+    const obj = this.__pb.create(this.getMsg());
     return this.__pb.encode(obj).finish();
   }
   protected __D(data: Uint8Array): any {
