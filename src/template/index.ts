@@ -185,7 +185,7 @@ export interface Header {
   length: number;
   version: number;
   flag: number;
-  command_id: ActionCommands;
+  command_id: number;
   seq_num: number;
   reversed: number;
 }
@@ -269,9 +269,11 @@ export class Pdu {
   }
 
   public updateSeqNo(seq_num:number){
+    this._bb = wrapByteBuffer(this._pbData)
     this._bb.offset = 10;
     writeInt16(this._bb, seq_num);
     this._pbHeader.seq_num = seq_num;
+    this.setPbData(toUint8Array(this._bb));
   }
   readPbData() {
     const headerBb = wrapByteBuffer(this._pbData.slice(0, HEADER_LEN));
